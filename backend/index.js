@@ -9,6 +9,9 @@ connectDB();
 const app = express();
 app.use(cors());
 
+app.use(express.json()); // Parse JSON request bodies 
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
+
 app.get("/", (req, res) => {
     res.send("Server is running properly!");
 });
