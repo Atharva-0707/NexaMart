@@ -1,0 +1,35 @@
+{
+  "name": "nexamart-full-stack",
+  "version": "1.0.0",
+  "description": "Full-stack MERN e-commerce platform with authentication, payments, and admin dashboard",
+  "keywords": [
+    "mern",
+    "ecommerce",
+    "react",
+    "nodejs",
+    "mongodb",
+    "express"
+  ],
+  "homepage": "https://github.com/Atharva-0707/NexaMart#readme",
+  "bugs": {
+    "url": "https://github.com/Atharva-0707/NexaMart/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Atharva-0707/NexaMart.git"
+  },
+  "license": "ISC",
+  "author": "Atharva Srivastava",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "install": "cd backend && npm install && cd ../frontend && npm install",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd frontend && npm run build"
+},
+  "dependencies": {
+    "concurrently": "^10.0.3"
+  }
+}
