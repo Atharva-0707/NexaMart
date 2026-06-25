@@ -60,7 +60,7 @@ const Checkout = () => {
       }
 
       const options = {
-        key: 'rzp_test_T4mG4ku5WCIau5',
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: orderData.amount,
         currency: orderData.currency,
         name: 'NexaMart',
