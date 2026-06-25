@@ -16,7 +16,31 @@ const Checkout = () => {
 
   const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
 
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+
+      document.body.appendChild(script);
+    });
+  };
+
   const handlePayment = async () => {
+
+    const loaded = await loadRazorpay();
+    if (!loaded) {
+      alert("Failed to load Razorpay SDK");
+      return;
+    }
+
     try {
       const orderRes = await fetch('/api/payment/order', {
         method: 'POST',
@@ -36,10 +60,10 @@ const Checkout = () => {
       }
 
       const options = {
-        key: 'rzp_test_dummykey123', // Student dummy fallback
+        key: 'rzp_test_T4mG4ku5WCIau5',
         amount: orderData.amount,
         currency: orderData.currency,
-        name: 'ShopNest',
+        name: 'NexaMart',
         description: 'Test Transaction',
         order_id: orderData.id,
         handler: async function (response) {
@@ -51,7 +75,7 @@ const Checkout = () => {
           if (verifyRes.ok) {
             const saveOrderRes = await fetch('/api/orders', {
               method: 'POST',
-              headers: { 
+              headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.token}`
               },
@@ -82,7 +106,7 @@ const Checkout = () => {
           color: '#f97316'
         }
       };
-      
+
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
     } catch (error) {
@@ -93,7 +117,7 @@ const Checkout = () => {
   const bypassPayment = async () => {
     const saveOrderRes = await fetch('/api/orders', {
       method: 'POST',
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${user.token}`
       },
@@ -126,14 +150,23 @@ const Checkout = () => {
       <div className="checkout-content">
         <form onSubmit={handleSubmit} className="shipping-form">
           <h3>Shipping Address</h3>
-          <input type="text" placeholder="Full Name" required value={address.fullName} onChange={(e) => setAddress({...address, fullName: e.target.value})} />
-          <input type="text" placeholder="Street" required value={address.street} onChange={(e) => setAddress({...address, street: e.target.value})} />
-          <input type="text" placeholder="City" required value={address.city} onChange={(e) => setAddress({...address, city: e.target.value})} />
-          <input type="text" placeholder="Postal Code" required value={address.postalCode} onChange={(e) => setAddress({...address, postalCode: e.target.value})} />
-          <input type="text" placeholder="Country" required value={address.country} onChange={(e) => setAddress({...address, country: e.target.value})} />
+          <input type="text" placeholder="Full Name" required value={address.fullName} onChange={(e) => setAddress({ ...address, fullName: e.target.value })} />
+          <input type="text" placeholder="Street" required value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })} />
+          <input type="text" placeholder="City" required value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
+          <input type="text" placeholder="Postal Code" required value={address.postalCode} onChange={(e) => setAddress({ ...address, postalCode: e.target.value })} />
+          <input type="text" placeholder="Country" required value={address.country} onChange={(e) => setAddress({ ...address, country: e.target.value })} />
           <div className="checkout-summary">
             <h4>Total to Pay: ₹{totalPrice.toFixed(2)}</h4>
             <button type="submit" className="btn">Pay Now</button>
+            <br />
+            <button
+              type="button"
+              className="btn"
+              style={{ marginTop: "10px", background: "#f97316" }}
+              onClick={bypassPayment}
+            >
+              Developer Bypass Payment
+            </button>
           </div>
         </form>
       </div>
