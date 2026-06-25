@@ -19,10 +19,6 @@ app.use(cors(
 app.use(express.json()); // Parse JSON request bodies 
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 
-app.get("/", (req, res) => {
-    res.send("Server is running properly!");
-});
-
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
@@ -31,11 +27,11 @@ app.use('/api/analytics', require('./routes/analyticsRoutes'));
 
 // Serve frontend in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/build')));
-  
-  app.use((req, res) => {
-    res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));
-  });
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
+});
 } else {
   app.get('/', (req, res) => {
     res.send('NexaMart API is running in Development mode...');
