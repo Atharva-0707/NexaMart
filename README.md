@@ -4,7 +4,7 @@ NexaMart is a full-stack MERN e-commerce platform that provides a complete onlin
 
 ## 🚀 Live Demo
 
-**Application:** https://nexamart-2jdb.onrender.com/shop
+**Application:** https://nexamart-2jdb.onrender.com
 
 ## ✨ Features
 
@@ -163,7 +163,9 @@ npm run build
 
 **Atharva Srivastava**
 
-GitHub: https://github.com/Atharva-0707
+GitHub:   https://github.com/Atharva-0707
+
+Linkedin: www.linkedin.com/in/atharva-srivastava-83073429a
 
 
 ## 🔑 Admin Test Credentials
